@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDI Core Security | PT. Laksana Digital Industri</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-main: #00ff41;
+            --text-dim: #008f11;
+            --border-color: #003b00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigasi */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(5, 5, 5, 0.95);
+            border-bottom: 1px solid var(--text-dim);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            flex-wrap: wrap;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        nav a:hover {
+            color: #fff;
+            text-shadow: 0 0 5px var(--text-main);
+        }
+
+        /* Container Umum */
+        section {
+            padding: 120px 20px 50px;
+            max-width: 900px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            /* font-size dinamis agar tidak tumpah di layar HP */
+            font-size: clamp(1.2rem, 4vw, 2.5rem); 
+            margin-bottom: 20px;
+            border-bottom: 1px dashed var(--text-dim);
+            padding-bottom: 10px;
+        }
+
+        h2, h3 {
+            margin-bottom: 20px;
+            border-bottom: 1px dashed var(--text-dim);
+            padding-bottom: 10px;
+            font-size: clamp(1.1rem, 3vw, 1.8rem);
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: left; /* Rata kiri sesuai permintaan */
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        /* Efek Ketik (Typing Effect) - Disesuaikan untuk Mobile */
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid var(--text-main);
+            white-space: nowrap;
+            letter-spacing: .1em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+            width: fit-content;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--text-main); }
+        }
+
+        /* Kartu Penjelasan */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            border: 1px solid var(--text-dim);
+            padding: 20px;
+            background: rgba(0, 59, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.2);
+            border-color: var(--text-main);
+        }
+
+        /* Simulasi Terminal */
+        .terminal {
+            background-color: #000;
+            border: 1px solid var(--text-dim);
+            border-radius: 5px;
+            padding: 20px;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            margin-top: 20px;
+            box-shadow: inset 0 0 10px #000;
+            overflow-x: auto; /* Mencegah teks panjang merusak layout */
+        }
+
+        .terminal span {
+            display: block;
+            margin-bottom: 5px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            white-space: pre-wrap;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Kontak & Ikon */
+        .contact-box {
+            border: 2px solid var(--text-main);
+            padding: 30px 20px;
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            word-break: break-all; /* Agar email panjang tidak melewati batas di HP */
+        }
+
+        .icon-svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--text-main);
+            flex-shrink: 0;
+        }
+
+        .contact-box a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+        }
+
+        .contact-box a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid var(--text-dim);
+            margin-top: 50px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Mobile Specifics */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
+            }
+            nav ul {
+                justify-content: center;
+            }
+            section {
+                padding-top: 140px; /* Kompensasi tinggi navbar yang melar di HP */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">LDI_CORE_SECURE</div>
+        <ul>
+            <li><a href="#beranda">_Beranda</a></li>
+            <li><a href="#sistem">_Sistem_Enkripsi</a></li>
+            <li><a href="#teknologi">_Teknologi</a></li>
+            <li><a href="#kontak">_Kontak</a></li>
+        </ul>
+    </nav>
+
+    <section id="beranda">
+        <h1 class="typewriter">PT. LAKSANA DIGITAL INDUSTRI</h1>
+        <p>Selamat datang di portal keamanan data tingkat lanjut. Kami menyediakan layanan pengamanan data digital menggunakan standar enkripsi militer tertinggi untuk melindungi aset perusahaan Anda dari ancaman siber.</p>
+        <br>
+        <p>> STATUS SISTEM: <span style="color: #fff;">ONLINE</span></p>
+        <p>> PROTOKOL: <span style="color: #fff;">AES-256 SECURED</span></p>
+    </section>
+
+    <section id="sistem">
+        <h2>>> PROTOKOL_KEAMANAN: AES-256</h2>
+        <p>Advanced Encryption Standard (AES) dengan kunci 256-bit adalah algoritma kriptografi simetris paling aman yang digunakan oleh pemerintah dan institusi perbankan global. Kami mengimplementasikan standar ini untuk memastikan tidak ada celah bagi peretas.</p>
+        
+        <br>
+        <h3>Bagaimana Algoritma Ini Bekerja?</h3>
+        <p>Data Anda tidak hanya dikunci, tetapi diacak melalui <strong>14 Putaran (Rounds)</strong> matematis yang sangat kompleks. Setiap putaran melibatkan 4 proses krusial:</p>
+        
+        <div class="card-container">
+            <div class="card">
+                <h3>1. SubBytes</h3>
+                <p>Mengganti setiap byte data dengan byte lain menggunakan tabel substitusi kompleks (S-box) untuk menghilangkan pola.</p>
+            </div>
+            <div class="card">
+                <h3>2. ShiftRows</h3>
+                <p>Menggeser baris data secara bertahap sehingga posisi setiap karakter berpindah secara acak dan terstruktur.</p>
+            </div>
+            <div class="card">
+                <h3>3. MixColumns</h3>
+                <p>Mencampur data secara vertikal menggunakan operasi matriks matematika linear yang rumit.</p>
+            </div>
+            <div class="card">
+                <h3>4. AddRoundKey</h3>
+                <p>Mengunci hasil acakan dengan sub-kunci yang diturunkan dari Master Key Anda yang unik.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="teknologi">
+        <h2>>> TINGKAT_KEAMANAN_BRUTE_FORCE</h2>
+        <p>Mengapa AES-256 disebut tidak bisa ditembus? Dengan panjang kunci 256-bit, terdapat <strong>2<sup>256</sup></strong> kombinasi kunci yang mungkin. Memecahkan sandi ini menggunakan superkomputer tercepat saat ini akan memakan waktu miliaran tahun, jauh lebih lama dari umur alam semesta.</p>
+
+        <h3 style="margin-top: 40px;">[ Simulasi Core Encryption LDI ]</h3>
+        <div class="terminal" id="terminal-sim">
+            </div>
+    </section>
+
+    <section id="kontak">
+        <h2>>> INITIATE_SECURE_CONNECTION</h2>
+        <p>Jangan biarkan data rahasia perusahaan Anda terekspos. Hubungi saluran aman kami untuk konsultasi dan pemasangan sistem enkripsi LDI Core.</p>
+        
+        <div class="contact-box">
+            <div class="contact-item">
+                <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                </svg>
+                <a href="tel:08567882625">08567882625</a>
+            </div>
+            
+            <div class="contact-item">
+                <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                <a href="mailto:laksanadigitalindustri@hotmail.com">laksanadigitalindustri@hotmail.com</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Copyright &copy; 2026 PT. Laksana Digital Industri. All Rights Reserved.</p>
+        <p>ENCRYPTED & SECURED</p>
+    </footer>
+
+    <script>
+        // Animasi Terminal
+        const terminalOutput = [
+            ">> [SYSTEM] Inisiasi sistem LDI Core dimulai...",
+            ">> [SECURITY] Memulai pemeriksaan keamanan...",
+            ">> [KEY] Menyiapkan parameter enkripsi AES-256...",
+            ">> [CORE] Mengacak data dengan 14 putaran siklus matriks...",
+            ">> [STATUS] Kunci Rahasia Utama terkonfigurasi.",
+            ">> [ALERT] Enkripsi end-to-end aktif dan terverifikasi.",
+            ">> [SYSTEM] Data Anda 100% AMAN."
+        ];
+
+        const terminalDiv = document.getElementById('terminal-sim');
+        
+        let terminalStarted = false;
+        
+        window.addEventListener('scroll', () => {
+            const rect = terminalDiv.getBoundingClientRect();
+            if(rect.top < window.innerHeight && !terminalStarted) {
+                terminalStarted = true;
+                let delay = 0;
+                terminalOutput.forEach((text, index) => {
+                    setTimeout(() => {
+                        const span = document.createElement('span');
+                        span.innerText = text;
+                        if(text.includes('100% AMAN')) span.style.color = '#fff';
+                        terminalDiv.appendChild(span);
+                    }, delay);
+                    delay += 600; 
+                });
+            }
+        });
+    </script>
+</body>
+</html>
